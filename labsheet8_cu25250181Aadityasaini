@@ -1,0 +1,105 @@
+#1
+class Node:
+ def __init__(self,data):
+  self.data=data
+  self.left=None
+  self.right=None
+def insert(root,data):
+ if root is None:
+  return Node(data)
+ if data<root.data:
+  root.left=insert(root.left,data)
+ elif data>root.data:
+  root.right=insert(root.right,data)
+ return root
+def delete(root,data):
+ if root is None:
+  return root
+ if data<root.data:
+  root.left=delete(root.left,data)
+ elif data>root.data:
+  root.right=delete(root.right,data)
+ else:
+  if root.left is None:
+   return root.right
+  if root.right is None:
+   return root.left
+  temp=root.right
+  while temp.left:
+   temp=temp.left
+  root.data=temp.data
+  root.right=delete(root.right,temp.data)
+ return root
+def inorder(root):
+ if root:
+  inorder(root.left)
+  print(root.data,end=" ")
+  inorder(root.right)
+root=None
+for value in [50,30,70,20,40,60,80]:
+ root=insert(root,value)
+print("BST before deletion:")
+inorder(root)
+root=delete(root,50)
+print("\nBST after deletion:")
+inorder(root)
+#2
+def balance_factor(node):
+ return height(node.left)-height(node.right)
+def balance(node):
+ bf=balance_factor(node)
+ if bf>1:
+  if balance_factor(node.left)<0:
+   node.left=rotate_left(node.left)
+  return rotate_right(node)
+ if bf<-1:
+  if balance_factor(node.right)>0:
+   node.right=rotate_right(node.right)
+  return rotate_left(node)
+ return node
+#3
+class Node:
+ def __init__(self):
+  self.keys=[]
+  self.child=[]
+def insert(node,key):
+ node.keys.append(key)
+ node.keys.sort()
+ if len(node.keys)>2:
+  mid=node.keys[1]
+  left=Node()
+  right=Node()
+  left.keys=[node.keys[0]]
+  right.keys=[node.keys[2]]
+  return mid,left,right
+ return None
+node=Node()
+for key in [10,20,30]:
+ result=insert(node,key)
+ if result:
+  mid,left,right=result
+  print("Middle key:",mid)
+  print("Left keys:",left.keys)
+  print("Right keys:",right.keys)
+ else:
+  print("Node keys:",node.keys)
+#4
+def insertion_sort(a):
+ for i in range(1,len(a)):
+  key=a[i]
+  j=i-1
+  while j>=0 and a[j]>key:
+   a[j+1]=a[j]
+   j-=1
+  a[j+1]=key
+ return a
+def bucket_sort(a):
+ buckets=[[] for _ in range(len(a))]
+ for x in a:
+  buckets[int(x*len(a))].append(x)
+ for b in buckets:
+  b.sort()
+ return [x for b in buckets for x in b]
+a=[0.42,0.32,0.23,0.52,0.25,0.47,0.51]
+print("Insertion Sort:",insertion_sort(a.copy()))
+print("Bucket Sort:",bucket_sort(a.copy()))

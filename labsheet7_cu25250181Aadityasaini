@@ -1,0 +1,26 @@
+#1
+import heapq
+def huffman(freq):
+ heap=[[f,ch] for ch,f in freq.items()]
+ heapq.heapify(heap)
+ while len(heap)>1:
+  a=heapq.heappop(heap)
+  b=heapq.heappop(heap)
+  heapq.heappush(heap,[a[0]+b[0],[a,b]])
+ return heap[0]
+freq={'A':5,'B':9,'C':12,'D':13}
+tree=huffman(freq)
+print("Huffman Tree:",tree)
+#2
+import heapq
+files=[20,30,10,5]
+heapq.heapify(files)
+total=0
+while len(files)>1:
+ a=heapq.heappop(files)
+ b=heapq.heappop(files)
+ merge=a+b
+ total+=merge
+ print(a,"+",b,"=",merge)
+ heapq.heappush(files,merge)
+print("Minimum Total Moves:",total)

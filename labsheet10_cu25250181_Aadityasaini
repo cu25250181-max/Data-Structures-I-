@@ -1,0 +1,146 @@
+#1
+class HashTable:
+ def __init__(self,size):
+  self.size=size
+  self.table=[[] for _ in range(size)]
+ def insert(self,key):
+  index=key%self.size
+  self.table[index].append(key)
+ def display(self):
+  for i in range(self.size):
+   print(i,":",self.table[i])
+h=HashTable(5)
+for key in [10,15,20,7,123]:
+ h.insert(key)
+h.display()
+#2
+class HashTable:
+ def __init__(self,size=5):
+  self.size=size
+  self.table=[None]*size
+  self.count=0
+ def insert(self,key):
+  if self.count>=self.size*0.7:
+   self.rehash()
+  index=key%self.size
+  while self.table[index] is not None:
+   index=(index+1)%self.size
+  self.table[index]=key
+  self.count+=1
+ def rehash(self):
+  old=self.table
+  self.size*=2
+  self.table=[None]*self.size
+  self.count=0
+  for key in old:
+   if key is not None:
+    self.insert(key)
+ def display(self):
+  print(self.table)
+h=HashTable()
+for key in [10,15,20,7]:
+ h.insert(key)
+h.display()
+#4
+graph=[[0,1,1,0],[1,0,0,1],[1,0,0,1],[0,1,1,0]]
+def dfs(graph,start,visited=None):
+ if visited is None:
+  visited=set()
+ visited.add(start)
+ print(start,end=" ")
+ for i in range(len(graph)):
+  if graph[start][i]==1 and i not in visited:
+   dfs(graph,i,visited)
+def bfs(graph,start):
+ visited={start}
+ queue=[start]
+ while queue:
+  node=queue.pop(0)
+  print(node,end=" ")
+  for i in range(len(graph)):
+   if graph[node][i]==1 and i not in visited:
+    visited.add(i)
+    queue.append(i)
+print("DFS Traversal:")
+dfs(graph,0)
+print("\nBFS Traversal:")
+bfs(graph,0)
+print()
+#5
+def kruskal(vertices, edges):
+    parent = list(range(vertices))
+
+    def find(x):
+        while parent[x] != x:
+            x = parent[x]
+        return x
+
+    mst = []
+    cost = 0
+    edges.sort(key=lambda x: x[2])
+
+    for u, v, w in edges:
+        pu = find(u)
+        pv = find(v)
+
+        if pu != pv:
+            parent[pu] = pv
+            mst.append((u, v, w))
+            cost += w
+
+    print("Edges in MST:")
+    for edge in mst:
+        print(edge)
+
+    print("Minimum Cost:", cost)
+
+
+edges = [
+    (0, 1, 10),
+    (0, 2, 6),
+    (0, 3, 5),
+    (1, 3, 15),
+    (2, 3, 4)
+]
+
+kruskal(4, edges)
+#6
+def prim(graph):
+    n = len(graph)
+    selected = [False] * n
+    selected[0] = True
+    mst = []
+    cost = 0
+
+    for _ in range(n - 1):
+        minimum = float('inf')
+        x = y = -1
+
+        for i in range(n):
+            if selected[i]:
+                for j in range(n):
+                    if not selected[j] and graph[i][j] != 0:
+                        if graph[i][j] < minimum:
+                            minimum = graph[i][j]
+                            x, y = i, j
+
+        selected[y] = True
+        mst.append((x, y, minimum))
+        cost += minimum
+
+    print("Edges in MST:")
+    for edge in mst:
+        print(edge)
+
+    print("Minimum cost:", cost)
+
+
+graph = [
+    [0, 2, 0, 6, 0],
+    [2, 0, 3, 8, 5],
+    [0, 3, 0, 0, 7],
+    [6, 8, 0, 0, 9],
+    [0, 5, 7, 9, 0]
+]
+
+prim(graph)

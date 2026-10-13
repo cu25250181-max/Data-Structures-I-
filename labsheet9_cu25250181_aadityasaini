@@ -1,0 +1,129 @@
+#1
+class MinHeap:
+ def __init__(self):
+  self.heap=[]
+ def insert(self,value):
+  self.heap.append(value)
+  i=len(self.heap)-1
+  while i>0:
+   parent=(i-1)//2
+   if self.heap[parent]>self.heap[i]:
+    self.heap[parent],self.heap[i]=self.heap[i],self.heap[parent]
+    i=parent
+   else:
+    break
+ def display(self):
+  print("Min Heap:",self.heap)
+class MaxHeap:
+ def __init__(self):
+  self.heap=[]
+ def insert(self,value):
+  self.heap.append(value)
+  i=len(self.heap)-1
+  while i>0:
+   parent=(i-1)//2
+   if self.heap[parent]<self.heap[i]:
+    self.heap[parent],self.heap[i]=self.heap[i],self.heap[parent]
+    i=parent
+   else:
+    break
+ def display(self):
+  print("Max Heap:",self.heap)
+values=[40,20,30,10,50]
+min_heap=MinHeap()
+max_heap=MaxHeap()
+for x in values:
+ min_heap.insert(x)
+ max_heap.insert(x)
+min_heap.display()
+max_heap.display()
+#2def heapify(arr,n,i):
+ largest=i
+ left=2*i+1
+ right=2*i+2
+ if left<n and arr[left]>arr[largest]:
+  largest=left
+ if right<n and arr[right]>arr[largest]:
+  largest=right
+ if largest!=i:
+  arr[i],arr[largest]=arr[largest],arr[i]
+  heapify(arr,n,largest)
+def heap_sort(arr):
+ n=len(arr)
+ for i in range(n//2-1,-1,-1):
+  heapify(arr,n,i)
+ for i in range(n-1,0,-1):
+  arr[0],arr[i]=arr[i],arr[0]
+  heapify(arr,i,0)
+ return arr
+def quick_sort(arr):
+ if len(arr)<=1:
+  return arr
+ pivot=arr[len(arr)//2]
+ left=[x for x in arr if x<pivot]
+ middle=[x for x in arr if x==pivot]
+ right=[x for x in arr if x>pivot]
+ return quick_sort(left)+middle+quick_sort(right)
+def merge_sort(arr):
+ if len(arr)<=1:
+  return arr
+ mid=len(arr)//2
+ left=merge_sort(arr[:mid])
+ right=merge_sort(arr[mid:])
+ result=[]
+ i=j=0
+ while i<len(left) and j<len(right):
+  if left[i]<right[j]:
+   result.append(left[i])
+   i+=1
+  else:
+   result.append(right[j])
+   j+=1
+ result.extend(left[i:])
+ result.extend(right[j:])
+ return result
+def bucket_sort(arr):
+ if not arr:
+  return []
+ min_value=min(arr)
+ max_value=max(arr)
+ buckets=[[] for _ in range(max_value-min_value+1)]
+ for x in arr:
+  buckets[x-min_value].append(x)
+ result=[]
+ for b in buckets:
+  result.extend(b)
+ return result
+data=[64,34,25,12,22,11,90]
+print("Original Array:",data)
+print("Heap Sort:",heap_sort(data.copy()))
+print("Quick Sort:",quick_sort(data.copy()))
+print("Merge Sort:",merge_sort(data.copy()))
+print("Bucket Sort:",bucket_sort(data.copy()))
+#3
+import time
+def linear_search(arr,key):
+ for i in range(len(arr)):
+  if arr[i]==key:
+   return i
+ return -1
+def binary_search(arr,key):
+ low=0
+ high=len(arr)-1
+ while low<=high:
+  mid=(low+high)//2
+  if arr[mid]==key:
+   return mid
+  elif arr[mid]<key:
+   low=mid+1
+  else:
+   high=mid-1
+ return -1
+arr=list(range(1,100001))
+key=99999
+start=time.perf_counter()
+print("Linear Search Index:",linear_search(arr,key))
+print("Linear Search Time:",time.perf_counter()-start)
+start=time.perf_counter()
+print("Binary Search Index:",binary_search(arr,key))
+print("Binary Search Time:",time.perf_counter()-start)

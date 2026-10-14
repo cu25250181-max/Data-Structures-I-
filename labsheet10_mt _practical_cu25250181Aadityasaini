@@ -1,0 +1,140 @@
+#open hasing
+class Node:
+ def __init__(self,data):
+  self.data=data
+  self.next=None
+
+class OpenHash:
+ def __init__(self,size):
+  self.size=size
+  self.table=[None]*size
+
+ def insert(self,data):
+  index=data%self.size
+  new=Node(data)
+  new.next=self.table[index]
+  self.table[index]=new
+
+ def display(self):
+  for i in range(self.size):
+   print(i,end=": ")
+   temp=self.table[i]
+   while temp:
+    print(temp.data,end=" -> ")
+    temp=temp.next
+   print("None")
+
+h=OpenHash(5)
+
+values=[10,15,20,25,30]
+
+for x in values:
+ h.insert(x)
+
+print("Open Hashing:")
+h.display()
+
+#close hasingclass ClosedHash:
+ def __init__(self,size):
+  self.size=size
+  self.table=[None]*size
+  self.count=0
+
+ def insert(self,data):
+  if self.count>=self.size*0.7:
+   self.rehash()
+
+  index=data%self.size
+
+  while self.table[index] is not None:
+   index=(index+1)%self.size
+
+  self.table[index]=data
+  self.count+=1
+
+ def rehash(self):
+  old=self.table
+  self.size=self.size*2
+  self.table=[None]*self.size
+  self.count=0
+
+  for x in old:
+   if x is not None:
+    self.insert(x)
+
+ def display(self):
+  for i in range(self.size):
+   print(i,":",self.table[i])
+
+h=ClosedHash(5)
+
+values=[10,15,20,25,30]
+
+for x in values:
+ h.insert(x)
+
+print("Closed Hashing:")
+h.display()
+#Q2
+from collections import deque
+
+graph = {
+ 0:[1,2],
+ 1:[0,3,4],
+ 2:[0,4],
+ 3:[1],
+ 4:[1,2]
+}
+
+n=5
+
+matrix=[[0]*n for _ in range(n)]
+
+for i in graph:
+ for j in graph[i]:
+  matrix[i][j]=1
+
+print("Adjacency Matrix:")
+for row in matrix:
+ print(row)
+
+print("\nAdjacency List:")
+for i in graph:
+ print(i,":",graph[i])
+
+def dfs(start):
+ visited=[False]*n
+ result=[]
+ stack=[start]
+
+ while stack:
+  node=stack.pop()
+  if not visited[node]:
+   visited[node]=True
+   result.append(node)
+   for x in reversed(graph[node]):
+    if not visited[x]:
+     stack.append(x)
+
+ return result
+
+def bfs(start):
+ visited=[False]*n
+ result=[]
+ queue=deque([start])
+ visited[start]=True
+
+ while queue:
+  node=queue.popleft()
+  result.append(node)
+
+  for x in graph[node]:
+   if not visited[x]:
+    visited[x]=True
+    queue.append(x)
+
+ return result
+
+print("\nDFS:",dfs(0))
+print("BFS:",bfs(0))
+#Q3
